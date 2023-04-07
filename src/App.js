@@ -15,6 +15,7 @@ function App() {
     const handleClickMarker = (marker) => {
         axios.get('/marker', { params: { username: marker.username, lat: marker.lat, lng: marker.lng } })
             .then(response => {
+                console.log(response);
                 // Set temporary parameters
                 document.getElementById('temp-username').innerHTML = response.data[0].username;
                 document.getElementById('temp-description').innerHTML = response.data[0].description;

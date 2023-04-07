@@ -6,6 +6,7 @@ const Marker = require('./models/marker.js');
 const Helped = require('./models/helped.js');
 const markerRoute = require('./routes/markerRoutes.js');
 const helpedRoute = require('./routes/helpedRoutes.js');
+require('dotenv').config();
 
 // This is so parse objects as json format through axios.post(() => {})
 app.use(express.json());

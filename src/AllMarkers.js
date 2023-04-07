@@ -13,11 +13,11 @@ const AllMarkers = props => {
 
     
     const handleOnMarkerDivClick = (marker) => {
-        // Set map to marker
-        props.mapRef.current.setCenter({lat: marker.lat, lng: marker.lng});
+        // Set map to marker                                                    
+        props.mapRef.current.setCenter({lat: marker.lat, lng: marker.lng});                                                 
 
-        // Optional: set zoom level as well
-        props.mapRef.current.setZoom(12);
+        // Set zoom level as well               // COPIED CODE                                           
+        props.mapRef.current.setZoom(12);       // COPIED CODE                                           
     }
     const handleShowAllMarkers = () => {
 

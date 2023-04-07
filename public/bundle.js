@@ -8560,15 +8560,16 @@ var AllMarkers = function AllMarkers(props) {
     handleShowAllMarkers();
   }, [props.markerList]);
   var handleOnMarkerDivClick = function handleOnMarkerDivClick(marker) {
-    // Set map to marker
+    // Set map to marker                                                    
     props.mapRef.current.setCenter({
       lat: marker.lat,
       lng: marker.lng
     });
 
-    // Optional: set zoom level as well
-    props.mapRef.current.setZoom(12);
+    // Set zoom level as well               // COPIED CODE                                           
+    props.mapRef.current.setZoom(12); // COPIED CODE                                           
   };
+
   var handleShowAllMarkers = function handleShowAllMarkers() {
     axios__WEBPACK_IMPORTED_MODULE_1__["default"].get('/markers').then(function (response) {
       // Delete previous information if currently exists
@@ -8664,6 +8665,7 @@ function App() {
         lng: marker.lng
       }
     }).then(function (response) {
+      console.log(response);
       // Set temporary parameters
       document.getElementById('temp-username').innerHTML = response.data[0].username;
       document.getElementById('temp-description').innerHTML = response.data[0].description;
@@ -8815,8 +8817,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Map = function Map(props) {
-  var crosshairRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-
   // Initialize map
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var loader = new _googlemaps_js_api_loader__WEBPACK_IMPORTED_MODULE_1__.Loader({
@@ -8824,53 +8824,72 @@ var Map = function Map(props) {
       version: 'weekly',
       libraries: ['places']
     });
-    loader.load().then(function () {
+    loader.load().then(function ()
+    // COPIED CODE
+    {
+      // COPIED CODE
       var map = new google.maps.Map(props.mapRef.current, {
+        // COPIED CODE
         center: {
           lat: 49.25,
           lng: -123
         },
-        zoom: 8
-      });
-
-      // Store the current reference to the google map
-      props.mapRef.current = map;
-      // This creates a search box textfield for locations
-      var searchBox = new google.maps.places.SearchBox(props.searchInputRef.current);
-      // When the map bounds changes, update the bounds
+        // COPIED CODE
+        zoom: 8 // COPIED CODE
+      }); // COPIED CODE
+      // COPIED CODE
+      // Store the current reference to the google map                                    // COPIED CODE
+      props.mapRef.current = map; // COPIED CODE
+      // This creates a search box textfield for locations                                // COPIED CODE
+      var searchBox = new google.maps.places.SearchBox(props.searchInputRef.current); // COPIED CODE
+      // When the map bounds changes, update the bounds                                   // COPIED CODE
       map.addListener('bounds_changed', function () {
-        // Reset crosshair
-        crosshairRef.current.style.top = 0;
-        crosshairRef.current.style.left = 0;
-        searchBox.setBounds(map.getBounds());
-      });
-      // When click the map, update setMarker state
+        // COPIED CODE
+        searchBox.setBounds(map.getBounds()); // COPIED CODE
+      }); // COPIED CODE
+      // When click the map, update setMarker state                                                     
       map.addListener('click', function (event) {
         document.getElementById("lat-text").value = event.latLng.lat();
         document.getElementById("lng-text").value = event.latLng.lng();
       });
+      // COPIED CODE
       searchBox.addListener('places_changed', function () {
-        var places = searchBox.getPlaces();
-        if (places.length === 0) {}
-        var bounds = new google.maps.LatLngBounds();
+        // COPIED CODE
+        var places = searchBox.getPlaces(); // COPIED CODE
+        // COPIED CODE
+        if (places.length === 0) {// COPIED CODE
+          // COPIED CODE
+        } // COPIED CODE
+        // COPIED CODE
+        var bounds = new google.maps.LatLngBounds(); // COPIED CODE
+        // COPIED CODE
         places.forEach(function (place) {
+          // COPIED CODE
           if (!place.geometry || !place.geometry.location) {
-            console.log('Returned place contains no geometry');
-            return;
-          }
+            // COPIED CODE
+            console.log('Returned place contains no geometry'); // COPIED CODE
+            return; // COPIED CODE
+          } // COPIED CODE
+
           var marker = new google.maps.Marker({
+            // COPIED CODE
             map: map,
+            // COPIED CODE
             title: place.username,
-            position: place.geometry.location
-          });
+            // COPIED CODE
+            position: place.geometry.location // COPIED CODE
+          }); // COPIED CODE
+
           if (place.geometry.viewport) {
-            bounds.union(place.geometry.viewport);
+            // COPIED CODE
+            bounds.union(place.geometry.viewport); // COPIED CODE
           } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-        map.fitBounds(bounds);
-      });
+            // COPIED CODE
+            bounds.extend(place.geometry.location); // COPIED CODE
+          } // COPIED CODE
+        }); // COPIED CODE
+        map.fitBounds(bounds); // COPIED CODE
+      }); // COPIED CODE
 
       // Get exising markers from mongooseDb and add to map
       console.log();
@@ -8882,12 +8901,6 @@ var Map = function Map(props) {
         console.log(error);
         console.log("error getting markers");
       });
-      // Set crosshair
-      crosshairRef.current = document.getElementById("crosshair");
-      document.getElementById("map").appendChild(crosshairRef.current);
-      crosshairRef.current.style.position = 'absolute';
-      crosshairRef.current.style.top = 0;
-      crosshairRef.current.style.left = 0;
     });
   }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -8898,11 +8911,6 @@ var Map = function Map(props) {
       height: '100%',
       width: '100%'
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
-    id: "crosshair",
-    src: "./resources/crosshair.png",
-    width: "20",
-    height: "20"
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Map);
@@ -9054,14 +9062,18 @@ var TempMarker = function TempMarker(props) {
       lat: +latRef.current.innerHTML,
       lng: +lngRef.current.innerHTML
     };
+    console.log("here");
     var foundMarker = props.markerList.find(function (marker) {
       return marker.title === markerToFind.username && marker.position.lat() === markerToFind.lat && marker.position.lng() === markerToFind.lng;
     });
+    console.log("here12");
     if (foundMarker == null) return;
 
     // Remove marker from database
+    console.log(foundMarker.username);
+    console.log(foundMarker.title);
     axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/removemarker', {
-      username: foundMarker.title,
+      username: foundMarker.username,
       lat: foundMarker.position.lat(),
       lng: foundMarker.position.lng()
     })["catch"](function (error) {
@@ -9079,6 +9091,20 @@ var TempMarker = function TempMarker(props) {
 
     // Assign list and the new list
     props.setMarkerList(newMarkerList);
+
+    // Refresh map with databse incase a wrong marker was deleted that
+    // was different from my markerList
+    // In other words, if my markerList useState() was different
+    // than the markers on the map, the events may be using the 
+    // wrong marker.info
+    axios__WEBPACK_IMPORTED_MODULE_2__["default"].get('/markers').then(function (response) {
+      response.data.forEach(function (marker) {
+        props.initializeMarkerToMap(marker);
+      });
+    })["catch"](function (error) {
+      console.log(error);
+      console.log("error getting markers");
+    });
 
     // Add helper to helper Database
     // Mongoose database

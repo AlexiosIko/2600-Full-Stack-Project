@@ -16,6 +16,7 @@ const TempMarker = props => {
             lat: +latRef.current.innerHTML,
             lng: +lngRef.current.innerHTML,
         };
+        console.log("here");
         const foundMarker = props.markerList.find((marker) => {
             return (
                 marker.title === markerToFind.username &&
@@ -23,12 +24,17 @@ const TempMarker = props => {
                 marker.position.lng() === markerToFind.lng
             );
         })
+        console.log("here12");
         if (foundMarker == null)
             return;
 
         // Remove marker from database
+        console.log(foundMarker.username);
+        console.log(foundMarker.title);
+
+
         axios.post('/removemarker', ({
-            username: foundMarker.title,
+            username: foundMarker.username,
             lat: foundMarker.position.lat(),
             lng: foundMarker.position.lng(),
         })).catch((error) => {
@@ -44,6 +50,22 @@ const TempMarker = props => {
 
         // Assign list and the new list
         props.setMarkerList(newMarkerList);
+
+        // Refresh map with databse incase a wrong marker was deleted that
+        // was different from my markerList
+        // In other words, if my markerList useState() was different
+        // than the markers on the map, the events may be using the 
+        // wrong marker.info
+        axios.get('/markers')
+        .then(response => {
+            response.data.forEach(marker => {
+                props.initializeMarkerToMap(marker);
+            })
+        })
+        .catch(error => {
+            console.log(error);
+            console.log("error getting markers");
+        });
 
 
 
